@@ -1,7 +1,4 @@
 
-# Simlink (Win10+ Powershell)
-`New-Item -Type SymbolicLink -Name "libs" -Target "D:\github-repos\figura-libs\"`
-
 # Libraries (For figura rewrite 0.1.x)
 
 ## util.lua
@@ -56,3 +53,10 @@ events.TICK:register(function ()
 	myAnimation:tick()
 end)
 ```
+
+---
+#### Simlink (Win10+ Powershell)
+Ignore this if you don't know what it is.
+
+`New-Item -Type SymbolicLink -Name "libs" -Target "D:\github-repos\figura-libs\"`
+
