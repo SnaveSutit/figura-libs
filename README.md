@@ -34,6 +34,8 @@ local myAnimation = animator.Animation:new{
 	animators = {
 		animator.BoneAnimator:new{
 			bone = boneMap.my_bone,
+			-- blendWeight is a value from 0 to 1. The larger it is the more priority this animation will have when blending on top of others
+			blendWeight = 0.5,
 			-- Pos, Rot, and Scl functions should return a vector.
 			-- If any of these functions are not defined in the BoneAnimator's options, they will be ignored
 			posFunc = function ()
