@@ -50,5 +50,10 @@
   //Enables the documentation.
   "Lua.workspace.library": [
     "./.vscode/figura"
-  ],
+],
+"Lua.diagnostics.globals": [
+	"vec",
+	"events",
+	"models"
+],
 }

@@ -2,8 +2,13 @@ local util = require("libs/util")
 
 local bones = {}
 
+---Houses and ticks BoneAnimators
+--- @class Animation
 local Animation = {
 	__ANIMATION_CLASS = true,
+	--- Creates a new Animation class instance
+	--- @param self Animation
+	---@param options {animators: {any: BoneAnimator}}
 	new = function(self, options)
 		local obj = util.classInit(self)
 
@@ -18,8 +23,13 @@ local Animation = {
 	end
 }
 
+--- Animates a single bone
+--- @class BoneAnimator
 local BoneAnimator = {
 	__BONEANIMATOR_CLASS = true,
+	--- Creates a new BoneAnimator class instance
+	--- @param self BoneAnimator
+	---@param options {bone: Bone, blendWeight: number, posFunc?: function, rotFunc?: function, sclFunc?: function}
 	new = function(self, options)
 		local obj = util.classInit(self)
 
@@ -36,8 +46,13 @@ local BoneAnimator = {
 	end
 }
 
+--- Houses a single model group/part for use in a BoneAnimator
+--- @class Bone
 local Bone = {
 	__BONE_CLASS = true,
+	--- Creates a new Bone class instance
+	--- @param self Bone
+	--- @param options {part: CustomModelPart}
 	new = function(self, options)
 		local obj = util.classInit(self)
 
@@ -125,9 +140,14 @@ events.RENDER:register(
 	end
 )
 
-return {
+--- SnaveSutit's Animator lib
+---
+--- Handles all of the repetitive heavy lifting when creating math-based animations
+--- @module "animator"
+local animator = {
 	Animation = Animation,
 	BoneAnimator = BoneAnimator,
 	Bone = Bone,
 	bones = bones
 }
+return animator
