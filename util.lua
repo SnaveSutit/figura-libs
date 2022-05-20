@@ -3,8 +3,12 @@
 local util = {
 	-- Ticks passed since the script started
 	tick = 0,
-	-- Seconds passed since the script started
-	seconds = 0
+	--- Seconds passed since the script started
+	seconds = 0,
+	--- How far the player has moved on x/y/z axis since the script started
+	playerDistanceTraveled3D = 0,
+	--- How far the player has moved on x/z axis since the script started
+	playerDistanceTraveled2D = 0
 }
 
 local playerPos = {
@@ -12,7 +16,7 @@ local playerPos = {
 	next = player:getPos()
 }
 --- The player's x/y/z velocity
-local playerVelocity3D = vec(0,0,0)
+local playerVelocity3D = vec(0, 0, 0)
 --- The player's x/z velocity
 local playerVelocity2D = vec(0, 0)
 
@@ -20,7 +24,9 @@ local function updatePlayerVelocity()
 	playerPos.last = playerPos.next
 	playerPos.next = player:getPos()
 	playerVelocity3D = playerPos.last - playerPos.next
-	playerVelocity2D = vectors.vec(playerVelocity3D.x, playerVelocity3D.z)
+	playerVelocity2D = vec(playerVelocity3D.x, playerVelocity3D.z)
+	util.playerDistanceTraveled3D = util.playerDistanceTraveled3D + playerVelocity3D:length()
+	util.playerDistanceTraveled2D = util.playerDistanceTraveled2D + playerVelocity2D:length()
 end
 --- Returns the player's current x/y/z speed
 --- @return number
@@ -58,15 +64,24 @@ local function getPlayerLeftRightMovement()
 	local b = fromAngle(math.rad(player:getBodyYaw()), 1)
 	return a:dot(b)
 end
---- Initializes an object with a metatable and __index for simulating classes in Lua
---- @param self table
+--- Creates a metatable "class"
+--- @param class table
 --- @return table
-local function classInit(self)
-	local obj = {}
-	setmetatable(obj, self)
-	self.__index = self
-	return obj
+local function newClass(class)
+	class.__index = class
+	class.new = function(self, args)
+		local this = setmetatable({}, self)
+		this:constructor(args)
+		return this
+	end
+	return class
 end
+-- local Test = newClass {
+-- 	constructor = function(self, args)
+-- 		self.name = args.name
+-- 	end
+-- }
+-- Test:new{name = 'MyName!'}
 
 events.TICK:register(
 	function()
@@ -77,7 +92,7 @@ events.TICK:register(
 )
 
 -- Exports
-util.classInit = classInit
+util.newClass = newClass
 util.playerPos = playerPos
 util.playerVelocity3D = playerVelocity3D
 util.playerVelocity2D = playerVelocity2D

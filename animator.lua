@@ -4,17 +4,13 @@ local bones = {}
 
 ---Houses and ticks BoneAnimators
 --- @class Animation
-local Animation = {
-	__ANIMATION_CLASS = true,
+local Animation = util.newClass{
 	--- Creates a new Animation class instance
 	--- @param self Animation
-	---@param options {animators: {any: BoneAnimator}}
-	new = function(self, options)
-		local obj = util.classInit(self)
-
-		obj.animators = options.animators or {}
-
-		return obj
+	---@param args {animators: {any: BoneAnimator}}
+	__Animation = true,
+	constructor = function(self, args)
+		self.animators = args.animators or {}
 	end,
 	tick = function(self)
 		for _, v in pairs(self.animators) do
@@ -25,21 +21,17 @@ local Animation = {
 
 --- Animates a single bone
 --- @class BoneAnimator
-local BoneAnimator = {
-	__BONEANIMATOR_CLASS = true,
+local BoneAnimator = util.newClass{
 	--- Creates a new BoneAnimator class instance
 	--- @param self BoneAnimator
-	---@param options {bone: Bone, blendWeight: number, posFunc?: function, rotFunc?: function, sclFunc?: function}
-	new = function(self, options)
-		local obj = util.classInit(self)
-
-		obj.bone = options.bone
-		obj.blendWeight = options.blendWeight or 0.5
-		obj.posFunc = options.posFunc
-		obj.rotFunc = options.rotFunc
-		obj.sclFunc = options.sclFunc
-
-		return obj
+	---@param args {bone: Bone, blendWeight: number, posFunc?: function, rotFunc?: function, sclFunc?: function}
+	__BoneAnimator = true,
+	constructor = function(self, args)
+		self.bone = args.bone
+		self.blendWeight = args.blendWeight or 0.5
+		self.posFunc = args.posFunc
+		self.rotFunc = args.rotFunc
+		self.sclFunc = args.sclFunc
 	end,
 	tick = function(self)
 		self.bone:update(self)
@@ -48,34 +40,29 @@ local BoneAnimator = {
 
 --- Houses a single model group/part for use in a BoneAnimator
 --- @class Bone
-local Bone = {
-	__BONE_CLASS = true,
+local Bone = util.newClass{
 	--- Creates a new Bone class instance
 	--- @param self Bone
-	--- @param options {part: CustomModelPart}
-	new = function(self, options)
-		local obj = util.classInit(self)
-
-		obj.part = options.part
-		obj.pos = {
+	--- @param args {part: CustomModelPart}
+	__Bone = true,
+	constructor = function(self, args)
+		self.part = args.part
+		self.pos = {
 			last = vec(0, 0, 0),
 			next = vec(0, 0, 0),
 			touched = false
 		}
-		obj.rot = {
+		self.rot = {
 			last = vec(0, 0, 0),
 			next = vec(0, 0, 0),
 			touched = false
 		}
-		obj.scl = {
+		self.scl = {
 			last = vec(1, 1, 1),
 			next = vec(1, 1, 1),
 			touched = false
 		}
-
-		bones[obj.part.name] = obj
-
-		return obj
+		bones[self.part.name] = self
 	end,
 	update = function(self, animator)
 		if (animator.posFunc) then
