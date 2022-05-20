@@ -31,11 +31,13 @@
   //Disables some unneeded diagnostics that many will not care about.
   //Do not touch unless you know what you are doing.
   "Lua.diagnostics.disable": [
-    "lowercase-global",
-    "trailing-space",
-    "unbalanced-assignments",
-    "duplicate-doc-class"
-  ],
+	"lowercase-global",
+	"trailing-space",
+	"unbalanced-assignments",
+	"duplicate-doc-class",
+	"undefined-doc-name",
+	"undefined-field"
+],
 
   //Changes the severity of some diagnostics to reflect their actual severity in Figura.
   //Do not touch unless you know what you are doing.
@@ -54,6 +56,9 @@
 "Lua.diagnostics.globals": [
 	"vec",
 	"events",
-	"models"
+	"models",
+	"player",
+	"log",
+	"logTable"
 ],
 }
