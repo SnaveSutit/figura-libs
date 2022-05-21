@@ -2,7 +2,7 @@
 --- @module "util"
 local util = {
 	-- Ticks passed since the script started
-	tick = 0,
+	ticks = 0,
 	--- Seconds passed since the script started
 	seconds = 0,
 	--- How far the player has moved on x/y/z axis since the script started
@@ -85,8 +85,8 @@ end
 
 events.TICK:register(
 	function()
-		util.tick = util.tick + 1
-		util.seconds = util.tick / 20
+		util.ticks = util.ticks + 1
+		util.seconds = util.ticks / 20
 		updatePlayerVelocity()
 	end
 )
