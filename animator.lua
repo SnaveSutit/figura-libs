@@ -1,10 +1,11 @@
-local util = require("libs/util")
+local newClass = require("libs/newClass")
 
 local bones = {}
 
 ---Houses and ticks BoneAnimators
 --- @class Animation
-local Animation = util.newClass{
+local Animation =
+	newClass {
 	--- Creates a new Animation class instance
 	--- @param self Animation
 	---@param args {animators: {any: BoneAnimator}}
@@ -20,7 +21,8 @@ local Animation = util.newClass{
 
 --- Animates a single bone
 --- @class BoneAnimator
-local BoneAnimator = util.newClass{
+local BoneAnimator =
+	newClass {
 	--- Creates a new BoneAnimator class instance
 	--- @param self BoneAnimator
 	---@param args {bone: Bone, blendWeight: number, posFunc?: function, rotFunc?: function, sclFunc?: function}
@@ -38,7 +40,8 @@ local BoneAnimator = util.newClass{
 
 --- Houses a single model group/part for use in a BoneAnimator
 --- @class Bone
-local Bone = util.newClass{
+local Bone =
+	newClass {
 	--- Creates a new Bone class instance
 	--- @param self Bone
 	--- @param args {part: CustomModelPart}

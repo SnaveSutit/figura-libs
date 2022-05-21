@@ -64,24 +64,6 @@ local function getPlayerLeftRightMovement()
 	local b = fromAngle(math.rad(player:getBodyYaw()), 1)
 	return a:dot(b)
 end
---- Creates a metatable "class"
---- @param class table
---- @return table
-local function newClass(class)
-	class.__index = class
-	class.new = function(self, args)
-		local this = setmetatable({}, self)
-		this:constructor(args)
-		return this
-	end
-	return class
-end
--- local Test = newClass {
--- 	constructor = function(self, args)
--- 		self.name = args.name
--- 	end
--- }
--- Test:new{name = 'MyName!'}
 
 events.TICK:register(
 	function()
@@ -92,7 +74,6 @@ events.TICK:register(
 )
 
 -- Exports
-util.newClass = newClass
 util.playerPos = playerPos
 util.playerVelocity3D = playerVelocity3D
 util.playerVelocity2D = playerVelocity2D

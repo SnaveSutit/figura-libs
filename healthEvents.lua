@@ -1,7 +1,7 @@
-local util = require("libs/util")
+local newClass = require("libs/newClass")
 
 local healthTracker =
-	util.newClass(
+	newClass(
 	{
 		--- A simple health event listener
 		--- @param args {entity: LivingEntity}
@@ -23,11 +23,19 @@ local healthTracker =
 			local delta = health - self.lastHealth
 
 			if (self.lastHealth > health) then
-				if (self.onChange) then self.onChange(delta) end
-				if (self.onDamage) then self.onDamage(delta) end
+				if (self.onChange) then
+					self.onChange(delta)
+				end
+				if (self.onDamage) then
+					self.onDamage(delta)
+				end
 			elseif (self.lastHealth < health) then
-				if (self.onChange) then self.onChange(delta) end
-				if (self.onHeal) then self.onHeal(delta) end
+				if (self.onChange) then
+					self.onChange(delta)
+				end
+				if (self.onHeal) then
+					self.onHeal(delta)
+				end
 			end
 
 			self.lastHealth = health
