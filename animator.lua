@@ -8,7 +8,6 @@ local Animation = util.newClass{
 	--- Creates a new Animation class instance
 	--- @param self Animation
 	---@param args {animators: {any: BoneAnimator}}
-	__Animation = true,
 	constructor = function(self, args)
 		self.animators = args.animators or {}
 	end,
@@ -25,7 +24,6 @@ local BoneAnimator = util.newClass{
 	--- Creates a new BoneAnimator class instance
 	--- @param self BoneAnimator
 	---@param args {bone: Bone, blendWeight: number, posFunc?: function, rotFunc?: function, sclFunc?: function}
-	__BoneAnimator = true,
 	constructor = function(self, args)
 		self.bone = args.bone
 		self.blendWeight = args.blendWeight or 0.5
@@ -44,7 +42,6 @@ local Bone = util.newClass{
 	--- Creates a new Bone class instance
 	--- @param self Bone
 	--- @param args {part: CustomModelPart}
-	__Bone = true,
 	constructor = function(self, args)
 		self.part = args.part
 		self.pos = {
