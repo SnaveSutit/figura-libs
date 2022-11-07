@@ -5,39 +5,29 @@ local util = {
 	ticks = 0,
 	--- Seconds passed since the script started
 	seconds = 0,
-	--- How far the player has moved on x/y/z axis since the script started
-	playerDistanceTraveled3D = 0,
-	--- How far the player has moved on x/z axis since the script started
-	playerDistanceTraveled2D = 0
+	--- Blocks traveled since script started
+	distance2D = 0, -- XYZ
+	distance3D = 0, -- XZ
+	--- Player's velocity
+	velocity2D = vec(0, 0, 0),
+	velocity3D = vec(0, 0, 0)
 }
 
---- The player's x/y/z velocity
-local playerVelocity3D = vec(0, 0, 0)
---- The player's x/z velocity
-local playerVelocity2D = vec(0, 0)
-
-local function updatePlayerVelocity()
-	playerVelocity3D = player:getVelocity()
-	playerVelocity2D = vec(playerVelocity3D.x, playerVelocity3D.z)
-	util.playerDistanceTraveled3D =
-		util.playerDistanceTraveled3D + playerVelocity3D:length()
-	util.playerDistanceTraveled2D =
-		util.playerDistanceTraveled2D + playerVelocity2D:length()
+local function update()
+	util.velocity3D = player:getVelocity()
+	util.velocity2D = vec(util.velocity3D.x, util.velocity3D.z)
+	util.distance3D = util.distance3D + util.velocity3D:length()
+	util.distance2D = util.distance2D + util.velocity2D:length()
 end
 --- Returns the player's current x/y/z speed
 --- @return number
-local function getPlayerSpeed3D()
-	return playerVelocity3D:length()
+local function getSpeed3D()
+	return util.velocity3D:length()
 end
 --- Returns the player's current x/z speed
 --- @return number
-local function getPlayerSpeed2D()
-	return playerVelocity2D:length()
-end
---- Returns the player's current vertical speed
---- @return number
-local function getPlayerSpeedVertical()
-	return playerVelocity3D.y
+local function getSpeed2D()
+	return util.velocity2D:length()
 end
 --- Creates a new Vector2 from an angle and magnitude
 --- @param angle number
@@ -48,15 +38,15 @@ local function fromAngle(angle, mag)
 end
 --- Returns a value of -1 to 1 describing the players movement back-to-forth relative to their look direction
 --- @return number
-local function getPlayerForthBackMovement()
-	local a = playerVelocity2D:copy():normalized()
+local function getFBDot()
+	local a = util.velocity2D:copy():normalized()
 	local b = fromAngle(math.rad(player:getBodyYaw() + 90), 1)
 	return a:dot(b)
 end
 --- Returns a value of -1 to 1 describing the players movement left-to-right relative to their look direction
 --- @return number
-local function getPlayerLeftRightMovement()
-	local a = playerVelocity2D:copy():normalized()
+local function getLRDot()
+	local a = util.velocity2D:copy():normalized()
 	local b = fromAngle(math.rad(player:getBodyYaw()), 1)
 	return a:dot(b)
 end
@@ -74,18 +64,15 @@ events.TICK:register(
 		util.ticks = util.ticks + 1
 		util.seconds = util.ticks / 20
 		if (player:isLoaded()) then
-			updatePlayerVelocity()
+			update()
 		end
 	end
 )
 
 -- Exports
-util.playerVelocity3D = playerVelocity3D
-util.playerVelocity2D = playerVelocity2D
-util.getPlayerSpeed3D = getPlayerSpeed3D
-util.getPlayerSpeed2D = getPlayerSpeed2D
-util.getPlayerForthBackMovement = getPlayerForthBackMovement
-util.getPlayerLeftRightMovement = getPlayerLeftRightMovement
-util.getPlayerSpeedVertical = getPlayerSpeedVertical
+util.getSpeed3D = getSpeed3D
+util.getSpeed2D = getSpeed2D
+util.getFBDot = getFBDot
+util.getLRDot = getLRDot
 util.clampVector = clampVector
 return util

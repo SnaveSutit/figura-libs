@@ -25,13 +25,13 @@ local BoneAnimator =
 	newClass {
 	--- Creates a new BoneAnimator class instance
 	--- @param self BoneAnimator
-	---@param args {bone: Bone, blendWeight: number, posFunc?: function, rotFunc?: function, sclFunc?: function}
+	---@param args {bone: Bone, blend_weight: number, pos_func?: function, rot_func?: function, scl_func?: function}
 	constructor = function(self, args)
 		self.bone = args.bone
-		self.blendWeight = args.blendWeight or 0.5
-		self.posFunc = args.posFunc
-		self.rotFunc = args.rotFunc
-		self.sclFunc = args.sclFunc
+		self.blend_weight = args.blend_weight or 0.5
+		self.pos_func = args.pos_func
+		self.rot_func = args.rot_func
+		self.scl_func = args.scl_func
 	end,
 	tick = function(self)
 		self.bone:update(self)
@@ -65,30 +65,30 @@ local Bone =
 		bones[self.part:getName()] = self
 	end,
 	update = function(self, animator)
-		if (animator.posFunc) then
+		if (animator.pos_func) then
 			if (self.pos.touched) then
 				self.pos.next =
-					math.lerp(self.pos.next, animator.posFunc(self), animator.blendWeight)
+					math.lerp(self.pos.next, animator.pos_func(self), animator.blend_weight)
 			else
-				self.pos.next = animator.posFunc(self)
+				self.pos.next = animator.pos_func(self)
 				self.pos.touched = true
 			end
 		end
-		if (animator.rotFunc) then
+		if (animator.rot_func) then
 			if (self.rot.touched) then
 				self.rot.next =
-					math.lerp(self.rot.next, animator.rotFunc(self), animator.blendWeight)
+					math.lerp(self.rot.next, animator.rot_func(self), animator.blend_weight)
 			else
-				self.rot.next = animator.rotFunc(self)
+				self.rot.next = animator.rot_func(self)
 				self.rot.touched = true
 			end
 		end
-		if (animator.sclFunc) then
+		if (animator.scl_func) then
 			if (self.scl.touched) then
 				self.scl.next =
-					math.lerp(self.scl.next, animator.sclFunc(self), animator.blendWeight)
+					math.lerp(self.scl.next, animator.scl_func(self), animator.blend_weight)
 			else
-				self.scl.next = animator.sclFunc(self)
+				self.scl.next = animator.scl_func(self)
 				self.scl.touched = true
 			end
 		end
