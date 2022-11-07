@@ -1,5 +1,5 @@
-
 --- Creates a metatable "class"
+--- Does not have inheritance
 --- @param class table
 --- @return table
 local function newClass(class)

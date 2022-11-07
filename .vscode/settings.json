@@ -35,7 +35,6 @@
 	"trailing-space",
 	"unbalanced-assignments",
 	"duplicate-doc-class",
-	"undefined-doc-name",
 	"undefined-field"
 ],
 
@@ -56,9 +55,6 @@
 "Lua.diagnostics.globals": [
 	"vec",
 	"events",
-	"models",
-	"player",
-	"log",
-	"logTable"
+	"models"
 ],
 }

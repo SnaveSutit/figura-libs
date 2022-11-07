@@ -3,6 +3,9 @@
 local schedule = {}
 local clock = 0
 
+--- Schedules a function to run after a number of ticks
+--- @param func function
+--- @param ticks number
 local function wait(func, ticks)
 	local time = clock + ticks
 	if (schedule[time]) then

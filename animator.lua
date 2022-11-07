@@ -62,12 +62,13 @@ local Bone =
 			next = vec(1, 1, 1),
 			touched = false
 		}
-		bones[self.part.name] = self
+		bones[self.part:getName()] = self
 	end,
 	update = function(self, animator)
 		if (animator.posFunc) then
 			if (self.pos.touched) then
-				self.pos.next = math.lerp(self.pos.next, animator.posFunc(self), animator.blendWeight)
+				self.pos.next =
+					math.lerp(self.pos.next, animator.posFunc(self), animator.blendWeight)
 			else
 				self.pos.next = animator.posFunc(self)
 				self.pos.touched = true
@@ -75,7 +76,8 @@ local Bone =
 		end
 		if (animator.rotFunc) then
 			if (self.rot.touched) then
-				self.rot.next = math.lerp(self.rot.next, animator.rotFunc(self), animator.blendWeight)
+				self.rot.next =
+					math.lerp(self.rot.next, animator.rotFunc(self), animator.blendWeight)
 			else
 				self.rot.next = animator.rotFunc(self)
 				self.rot.touched = true
@@ -83,7 +85,8 @@ local Bone =
 		end
 		if (animator.sclFunc) then
 			if (self.scl.touched) then
-				self.scl.next = math.lerp(self.scl.next, animator.sclFunc(self), animator.blendWeight)
+				self.scl.next =
+					math.lerp(self.scl.next, animator.sclFunc(self), animator.blendWeight)
 			else
 				self.scl.next = animator.sclFunc(self)
 				self.scl.touched = true
@@ -108,11 +111,18 @@ local Bone =
 		if (self.scl.touched) then
 			self.part:setScl(math.lerp(self.scl.last, self.scl.next, delta))
 		end
+	end,
+	getWorldPos = function(self)
+		local pos4 = self.part:partToWorldMatrix():transpose():getRow(4)
+		return vec(pos4.x, pos4.y, pos4.z)
 	end
 }
 
 events.TICK:register(
 	function()
+		-- if not player:exists() then
+		-- 	return
+		-- end
 		for _, v in pairs(bones) do
 			v:tick()
 		end
@@ -121,6 +131,9 @@ events.TICK:register(
 
 events.RENDER:register(
 	function(delta)
+		-- if not player:exists() then
+		-- 	return
+		-- end
 		for _, v in pairs(bones) do
 			v:render(delta)
 		end

@@ -11,22 +11,18 @@ local util = {
 	playerDistanceTraveled2D = 0
 }
 
-local playerPos = {
-	last = player:getPos(),
-	next = player:getPos()
-}
 --- The player's x/y/z velocity
 local playerVelocity3D = vec(0, 0, 0)
 --- The player's x/z velocity
 local playerVelocity2D = vec(0, 0)
 
 local function updatePlayerVelocity()
-	playerPos.last = playerPos.next
-	playerPos.next = player:getPos()
-	playerVelocity3D = playerPos.last - playerPos.next
+	playerVelocity3D = player:getVelocity()
 	playerVelocity2D = vec(playerVelocity3D.x, playerVelocity3D.z)
-	util.playerDistanceTraveled3D = util.playerDistanceTraveled3D + playerVelocity3D:length()
-	util.playerDistanceTraveled2D = util.playerDistanceTraveled2D + playerVelocity2D:length()
+	util.playerDistanceTraveled3D =
+		util.playerDistanceTraveled3D + playerVelocity3D:length()
+	util.playerDistanceTraveled2D =
+		util.playerDistanceTraveled2D + playerVelocity2D:length()
 end
 --- Returns the player's current x/y/z speed
 --- @return number
@@ -65,16 +61,25 @@ local function getPlayerLeftRightMovement()
 	return a:dot(b)
 end
 
+local function clampVector(v, min, max)
+	return vec(
+		math.clamp(v.x, min.x, max.x),
+		math.clamp(v.y, min.y, max.y),
+		math.clamp(v.z, min.z, max.z)
+	)
+end
+
 events.TICK:register(
 	function()
 		util.ticks = util.ticks + 1
 		util.seconds = util.ticks / 20
-		updatePlayerVelocity()
+		if (player:isLoaded()) then
+			updatePlayerVelocity()
+		end
 	end
 )
 
 -- Exports
-util.playerPos = playerPos
 util.playerVelocity3D = playerVelocity3D
 util.playerVelocity2D = playerVelocity2D
 util.getPlayerSpeed3D = getPlayerSpeed3D
@@ -82,4 +87,5 @@ util.getPlayerSpeed2D = getPlayerSpeed2D
 util.getPlayerForthBackMovement = getPlayerForthBackMovement
 util.getPlayerLeftRightMovement = getPlayerLeftRightMovement
 util.getPlayerSpeedVertical = getPlayerSpeedVertical
+util.clampVector = clampVector
 return util
