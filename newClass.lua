@@ -1,4 +1,4 @@
---- Creates a metatable "class"
+--- Creates a simple metatable "class" without massive inheritance overhead when it's not needed.
 --- Does not have inheritance
 --- @param class table
 --- @return table

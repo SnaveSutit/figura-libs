@@ -1,10 +1,9 @@
-local newClass = require("libs/newClass")
+local newClass = require('libs/newClass')
 
-local healthTracker =
-	newClass(
+local healthTracker = newClass(
 	{
 		--- A simple health event listener
-		--- @param args {entity: LivingEntity}
+		--- @param args {entity: PlayerAPI}
 		constructor = function(self, args)
 			self.entity = args.entity
 			self.onDamage = args.onDamage
@@ -23,23 +22,15 @@ local healthTracker =
 			local delta = health - self.lastHealth
 
 			if (self.lastHealth > health) then
-				if (self.onChange) then
-					self.onChange(delta)
-				end
-				if (self.onDamage) then
-					self.onDamage(delta)
-				end
+				if (self.onChange) then self.onChange(delta) end
+				if (self.onDamage) then self.onDamage(delta) end
 			elseif (self.lastHealth < health) then
-				if (self.onChange) then
-					self.onChange(delta)
-				end
-				if (self.onHeal) then
-					self.onHeal(delta)
-				end
+				if (self.onChange) then self.onChange(delta) end
+				if (self.onHeal) then self.onHeal(delta) end
 			end
 
 			self.lastHealth = health
-		end
+		end,
 	}
 )
 

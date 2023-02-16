@@ -10,7 +10,7 @@ local util = {
 	distance3D = 0, -- XZ
 	--- Player's velocity
 	velocity2D = vec(0, 0, 0),
-	velocity3D = vec(0, 0, 0)
+	velocity3D = vec(0, 0, 0),
 }
 
 local function update()
@@ -53,19 +53,27 @@ end
 
 local function clampVector(v, min, max)
 	return vec(
-		math.clamp(v.x, min.x, max.x),
-		math.clamp(v.y, min.y, max.y),
-		math.clamp(v.z, min.z, max.z)
+		math.clamp(v.x, min.x, max.x), math.clamp(v.y, min.y, max.y),
+			math.clamp(v.z, min.z, max.z)
 	)
+end
+
+local function moveWave(waveform, waveformOffset, speed, magnitude, dot)
+	if (dot == nil) then dot = getFBDot() end
+	return waveform((util.distance2D * speed) + waveformOffset)
+		       * (getSpeed2D() * 6 * magnitude * dot)
+end
+
+local function moveMul(n, dot)
+	local dot = not (dot == nil) and dot or util.getFBDot()
+	return n * (getSpeed2D() * 6 * dot)
 end
 
 events.TICK:register(
 	function()
 		util.ticks = util.ticks + 1
 		util.seconds = util.ticks / 20
-		if (player:isLoaded()) then
-			update()
-		end
+		if (player:isLoaded()) then update() end
 	end
 )
 
@@ -75,4 +83,6 @@ util.getSpeed2D = getSpeed2D
 util.getFBDot = getFBDot
 util.getLRDot = getLRDot
 util.clampVector = clampVector
+util.moveWave = moveWave
+util.moveMul = moveMul
 return util
